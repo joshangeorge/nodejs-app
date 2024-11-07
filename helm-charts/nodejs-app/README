@@ -1,0 +1,15 @@
+The commands to apply helm charts
+
+helm install nodejs-app helm-charts/nodejs-app --debug --namespace local --create-namespace
+helm upgrade nodejs-app helm-charts/nodejs-app --debug --namespace local
+
+helm install nodejs-app helm-charts/nodejs-app --debug -f ./helm-charts/nodejs-app/values-dev.yaml --namespace dev --create-namespace
+helm upgrade nodejs-app helm-charts/nodejs-app --debug -f ./helm-charts/nodejs-app/values-dev.yaml --namespace dev
+
+helm upgrade nodejs-app helm-charts/nodejs-app --atomic -f ./helm-charts/nodejs-app/values-dev.yaml --namespace dev
+
+helm get manifest nodejs-app --namespace local
+helm get manifest nodejs-app --namespace dev
+
+helm list -A
+helm list -n dev

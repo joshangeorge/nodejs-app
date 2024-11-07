@@ -1,0 +1,22 @@
+labels:
+  app: nodejs-app
+  env: dev
+selector_labels:
+  app: nodejs-app
+  env: dev
+image:
+  repository: joshanjoe/nodejs-app
+  tag: latest
+containerPort: 3000
+resources:
+  limits:
+    cpu: 500m
+    memory: 128Mi
+replica_count: 2
+kubernetesClusterDomain: cluster.local
+service:
+  nodePort: 30011
+  port: 3010
+  targetPort: 3000
+  type: NodePort
+

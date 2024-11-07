@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deploy
+  {{- if .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
+  {{- end }}
+  labels:
+    {{- range $key,$value := .Values.labels }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  {{- if .Values.replica_count }}
+  replicas: {{ .Values.replica_count }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- range $key,$value := .Values.selector_labels }}
+      {{ $key }}: {{ $value }}
+      {{- end }}
+  template:
+    metadata:
+      labels:
+        {{- range $key,$value := .Values.selector_labels }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+        resources: {{- toYaml .Values.resources | nindent 10 }}
+        ports:
+        - containerPort: 3000
+        env:
+          - name: KUBERNETES_CLUSTER_DOMAIN
+            value: {{ .Values.kubernetesClusterDomain }}
