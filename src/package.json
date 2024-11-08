@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "esm": "^3.2.25",
-    "express": "^5.0.1"
+    "express": "^5.0.1",
+    "log4js": "^6.9.1"
   },
   "devDependencies": {
     "jest": "^29.7.0",
